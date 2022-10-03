@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 django = "*"
 python-dotenv = "*"
+django-phonenumber-field = "*"
+mysqlclient = "*"
+phonenumberslite = "*"
 
 [dev-packages]
 
