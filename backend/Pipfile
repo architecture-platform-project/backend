@@ -9,6 +9,10 @@ python-dotenv = "*"
 django-phonenumber-field = "*"
 mysqlclient = "*"
 phonenumberslite = "*"
+djangorestframework-simplejwt = "*"
+djangorestframework = "*"
+dj-rest-auth = "*"
+django-allauth = "*"
 
 [dev-packages]
 
