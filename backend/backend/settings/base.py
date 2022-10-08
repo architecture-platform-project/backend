@@ -163,12 +163,20 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.JSONRenderer",
     ],
 }
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    "REGISTER_SERIALIZER": "user.serializers.CustomRegisterSerializer",
+}
+
+
 """
 ACCOUNT CONF
 """
 SITE_ID = 1
 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# ACCOUNT_ADAPTER = "user.adapter.CustomUserAccountAdapter"
+
+# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False

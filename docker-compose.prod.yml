@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  backend:
+    container_name: backend
+    image: zium-backend:latest
+    restart: always
+    volumes:
+      - ./backend:/backend
+    environment:
+      DJANGO_SETTINGS_MODULE: backend.settings.local
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
