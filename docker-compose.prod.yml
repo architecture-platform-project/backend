@@ -3,7 +3,7 @@ version: "3.7"
 services:
   backend:
     container_name: backend
-    image: zium-backend:latest
+    image: kdh92417/zium-backend:latest
     restart: always
     volumes:
       - ./backend:/backend
