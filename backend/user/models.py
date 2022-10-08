@@ -13,14 +13,33 @@ from common.models import TimeStampModel
 class UserManager(BaseUserManager):
     """유저매니저 재정의"""
 
-    def create_user(self, email, password, **extra_fields):
+    def _create_user(
+        self,
+        username,
+        email,
+        password,
+        phone_number,
+        gender,
+        age,
+        is_architect,
+        **extra_fields
+    ):
         if not email:
             raise ValueError(_("The Email must be set"))
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
+        user.username = username
+        user.phone_number = phone_number
+        user.gender = gender
+        user.age = age
+        user.is_architect = is_architect
         user.save()
+
         return user
+
+    def create_user(self, username, email, password, **extra_fields):
+        return self._create_user(username, email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
         # extra_fields.setdefault("is_staff", True)
@@ -56,15 +75,15 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampModel):
 
     username_validator = UnicodeUsernameValidator()
 
-    username = models.CharField(
-        _("username"), max_length=45, validators=[username_validator], null=True
-    )
+    username = models.CharField(_("username"), max_length=45)
     email = models.EmailField(_("email_address"), unique=True)
-    phone_number = PhoneNumberField()
-    is_architect = models.BooleanField(_("Is architect"), default=False)
+    phone_number = PhoneNumberField(null=True, unique=True)
+    is_architect = models.BooleanField(_("Is architect"), default=False, null=False)
     is_staff = models.BooleanField(_("Is staff"), default=False)
-    gender = models.CharField(max_length=1, choices=[("m", "Male"), ("f", "Female")])
-    age = models.IntegerField(null=True, blank=True)
+    gender = models.CharField(
+        max_length=1, choices=[("m", "Male"), ("f", "Female")], null=True
+    )
+    age = models.IntegerField(null=True)
     corporation = models.OneToOneField(
         Corporation, null=True, on_delete=models.SET_NULL
     )
