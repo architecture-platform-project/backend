@@ -23,7 +23,7 @@ class TestUser(APITestCase):
         :return:
         """
         sign_up_data = {
-            "username": "adam",
+            "user_name": "adam",
             "email": "adam2@naver.com",
             "password1": "1234@1234",
             "password2": "1234@1234",

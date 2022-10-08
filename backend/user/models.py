@@ -15,7 +15,7 @@ class UserManager(BaseUserManager):
 
     def _create_user(
         self,
-        username,
+        user_name,
         email,
         password,
         phone_number,
@@ -29,7 +29,7 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.username = username
+        user.user_name = user_name
         user.phone_number = phone_number
         user.gender = gender
         user.age = age
@@ -38,8 +38,8 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_user(self, username, email, password, **extra_fields):
-        return self._create_user(username, email, password, **extra_fields)
+    def create_user(self, user_name, email, password, **extra_fields):
+        return self._create_user(user_name, email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
         # extra_fields.setdefault("is_staff", True)
@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampModel):
 
     username_validator = UnicodeUsernameValidator()
 
-    username = models.CharField(_("username"), max_length=45)
+    user_name = models.CharField(_("user_name"), max_length=45, unique=False)
     email = models.EmailField(_("email_address"), unique=True)
     phone_number = PhoneNumberField(null=True, unique=True)
     is_architect = models.BooleanField(_("Is architect"), default=False, null=False)
