@@ -25,7 +25,8 @@ jobs:
         REPO: kdh92417
         LAYER_NAME: zium-backend
       run: |
-        docker build -t $LAYER_NAME  .
+        ls -al
+        docker build -t $LAYER_NAME  ./backend
         docker tag $LAYER_NAME:latest $REPO/$LAYER_NAME:latest
         docker push $REPO/$LAYER_NAME:latest
         
