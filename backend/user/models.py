@@ -20,7 +20,7 @@ class UserManager(BaseUserManager):
         password,
         phone_number,
         gender,
-        age,
+        birth_date,
         is_architect,
         **extra_fields
     ):
@@ -32,7 +32,7 @@ class UserManager(BaseUserManager):
         user.user_name = user_name
         user.phone_number = phone_number
         user.gender = gender
-        user.age = age
+        user.birth_date = birth_date
         user.is_architect = is_architect
         user.save()
 
@@ -83,7 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampModel):
     gender = models.CharField(
         max_length=1, choices=[("m", "Male"), ("f", "Female")], null=True
     )
-    age = models.IntegerField(null=True)
+    birth_date = models.DateField(null=True)
     corporation = models.OneToOneField(
         Corporation, null=True, on_delete=models.SET_NULL
     )

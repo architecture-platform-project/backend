@@ -5,8 +5,6 @@ services:
     container_name: backend
     image: kdh92417/zium-backend:latest
     restart: always
-    volumes:
-      - ./backend:/backend
     environment:
       DJANGO_SETTINGS_MODULE: backend.settings.local
     env_file:
