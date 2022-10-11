@@ -38,10 +38,10 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} '
           cd /home/ubuntu/zium &&
           sudo docker-compose down &&
-
-          sudo docker stop `sudo docker ps -a -q` &&
-          sudo docker rm `sudo docker ps -a -q` &&
-          sudo docker rmi `sudo docker images -a -q` &&
-
-          sudo docker-compose -f docker-compose.prod.yml up -d
+          
+          git checkout develop &&
+          git fetch --all &&
+          git reset --hard origin/develop &&
+          git pull origin develop &&
+          sudo docker-compose -f docker-compose.prod.yml up -d --build
         '
