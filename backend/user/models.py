@@ -13,36 +13,21 @@ from common.models import TimeStampModel
 class UserManager(BaseUserManager):
     """유저매니저 재정의"""
 
-    def _create_user(
-        self,
-        user_name,
-        email,
-        password,
-        phone_number,
-        gender,
-        birth_date,
-        is_architect,
-        **extra_fields
-    ):
+    def _create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError(_("The Email must be set"))
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.user_name = user_name
-        user.phone_number = phone_number
-        user.gender = gender
-        user.birth_date = birth_date
-        user.is_architect = is_architect
         user.save()
 
         return user
 
-    def create_user(self, user_name, email, password, **extra_fields):
-        return self._create_user(user_name, email, password, **extra_fields)
+    def create_user(self, email, password, **extra_fields):
+        return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
-        # extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
 
@@ -80,6 +65,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampModel):
     phone_number = PhoneNumberField(null=True, unique=True)
     is_architect = models.BooleanField(_("Is architect"), default=False, null=False)
     is_staff = models.BooleanField(_("Is staff"), default=False)
+    is_active = models.BooleanField(_("Is Active"), default=True)
     gender = models.CharField(
         max_length=1, choices=[("m", "Male"), ("f", "Female")], null=True
     )
