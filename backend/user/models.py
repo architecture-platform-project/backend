@@ -38,7 +38,7 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class Corporation(models.Model):
+class Corporation(TimeStampModel, models.Model):
     """회사법인 모델"""
 
     business_name = models.CharField(_("상호명"), max_length=45)
@@ -87,3 +87,38 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampModel):
     def clean(self):
         super().clean()
         self.email = self.__class__.objects.normalize_email(self.email)
+
+
+class ImageType(TimeStampModel, models.Model):
+    """
+    이미지 타입 Model
+    """
+
+    type_name = models.CharField(max_length=10)
+    desc = models.CharField(max_length=300)
+
+    class Meta:
+        db_table = "image_types"
+
+    def __str__(self):
+        return self.type_name
+
+
+class BusinessImage(models.Model):
+    """
+    법인 이미지 Model
+    """
+
+    image_url = models.URLField()
+    image_name = models.CharField(max_length=45)
+    image_size = models.FloatField()
+    image_type = models.OneToOneField(ImageType, on_delete=models.SET_NULL, null=True)
+    corporation = models.ForeignKey(
+        Corporation, on_delete=models.SET_NULL, null=True, related_name="business_image"
+    )
+
+    class Meta:
+        db_table = "business_images"
+
+    def __str__(self):
+        return self.image_name
