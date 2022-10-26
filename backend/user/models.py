@@ -44,7 +44,7 @@ class Corporation(TimeStampModel, models.Model):
     business_name = models.CharField(_("상호명"), max_length=45)
     repr_name = models.CharField(_("대표자명"), max_length=45)
     business_address = models.CharField(_("사업장 주소"), max_length=300)
-    homepage_url = models.CharField(_("Homepage"), max_length=300)
+    homepage_url = models.CharField(_("Homepage"), max_length=300, null=True)
     business_reg_num = models.CharField(_("사업자 등록 번호"), max_length=12)
     office_op_num = models.CharField(_("사무소 개설 번호"), max_length=10)
 
