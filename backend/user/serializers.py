@@ -1,10 +1,22 @@
+from abc import ABC
+
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from django.db import transaction
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from user.models import User
+from user.models import User, Corporation
+
+
+class CorporationSerializer(serializers.ModelSerializer):
+    """
+    Corporation Serializer
+    """
+
+    class Meta:
+        model = Corporation
+        fields = "__all__"
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -17,6 +29,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     is_architect = serializers.BooleanField(default=False)
     phone_number = serializers.CharField(max_length=20)
     gender = serializers.ChoiceField(choices=[("m", "Male"), ("f", "Female")])
+    corporation = CorporationSerializer(many=False, default=None)
 
     class Meta:
         model = User
@@ -29,6 +42,18 @@ class CustomRegisterSerializer(RegisterSerializer):
             "phone_number",
             "gender",
         ]
+
+    def data(self):
+        print("data ::::")
+
+    def validated_data(self):
+        print("validated data: ")
+
+    def validate(self, data):
+        print("validate")
+        print("validate data : ", data)
+        print("files : ", self.context["request"].FIES)
+        print("data : ", self.context["request"].data)
 
     # Todo: 국제번호도 받게 해야됨
     def validate_phone_number(self, phone_number):
@@ -61,8 +86,11 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.gender = self.validated_data["gender"]
         user.save()
 
+        raise ValidationError({"detail": "eeeee"})
+
     @transaction.atomic
     def save(self, request):
+        print(self.validated_data)
         try:
             return super().save(request)
         except Exception as e:
@@ -70,12 +98,14 @@ class CustomRegisterSerializer(RegisterSerializer):
             raise ValidationError({"detail": e})
 
     def get_cleaned_data(self):
+        print("get cline")
         data = super().get_cleaned_data()
         data["user_name"] = self.validated_data.get("user_name", "")
         data["birth_date"] = self.validated_data.get("birth_date", "")
         data["is_architect"] = self.validated_data.get("is_architect", "")
         data["phone_numbers"] = self.validated_data.get("phone_numbers", "")
         data["gender"] = self.validated_data.get("gender", "")
+        data["corporation"] = self.validated_data.get("corporation", "")
         return data
 
 
