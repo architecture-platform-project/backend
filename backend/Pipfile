@@ -13,6 +13,7 @@ djangorestframework-simplejwt = "*"
 djangorestframework = "*"
 dj-rest-auth = "*"
 django-allauth = "*"
+drf-yasg = "*"
 
 [dev-packages]
 
