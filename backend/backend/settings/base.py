@@ -57,7 +57,6 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = ["user.apps.UserConfig", "common.apps.CommonConfig"]
 
-
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
